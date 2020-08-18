@@ -60,6 +60,9 @@
 #ifdef RTE_LIBRTE_LATENCY_STATS
 #include <rte_latencystats.h>
 #endif
+#ifdef RTE_LIBRTE_APISTATS
+#include <rte_apistats.h>
+#endif
 
 #include "testpmd.h"
 
@@ -3797,6 +3800,10 @@ main(int argc, char** argv)
 		printf("Latencystats running on lcore %d\n",
 			latencystats_lcore_id);
 	}
+#endif
+
+#ifdef RTE_LIBRTE_APISTATS
+	rte_apistats_init();
 #endif
 
 	/* Setup bitrate stats */
