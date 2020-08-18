@@ -160,6 +160,9 @@ extern "C" {
 
 #include "rte_ethdev_trace_fp.h"
 #include "rte_dev_info.h"
+#ifdef RTE_LIBRTE_APISTATS
+#include <rte_apistats.h>
+#endif
 
 extern int rte_eth_dev_logtype;
 
@@ -4509,6 +4512,11 @@ rte_eth_rx_burst(uint16_t port_id, uint16_t queue_id,
 	nb_rx = (*dev->rx_pkt_burst)(dev->data->rx_queues[queue_id],
 				     rx_pkts, nb_pkts);
 
+#ifdef RTE_LIBRTE_APISTATS
+	int lcore_id = rte_lcore_id();
+	rte_apicounts->rx_burst_counts[lcore_id]++;
+#endif
+
 #ifdef RTE_ETHDEV_RXTX_CALLBACKS
 	if (unlikely(dev->post_rx_burst_cbs[queue_id] != NULL)) {
 		struct rte_eth_rxtx_callback *cb =
@@ -4772,6 +4780,11 @@ rte_eth_tx_burst(uint16_t port_id, uint16_t queue_id,
 		RTE_ETHDEV_LOG(ERR, "Invalid TX queue_id=%u\n", queue_id);
 		return 0;
 	}
+#endif
+
+#ifdef RTE_LIBRTE_APISTATS
+	int lcore_id = rte_lcore_id();
+	rte_apicounts->tx_burst_counts[lcore_id]++;
 #endif
 
 #ifdef RTE_ETHDEV_RXTX_CALLBACKS

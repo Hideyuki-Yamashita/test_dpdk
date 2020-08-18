@@ -241,6 +241,11 @@ EXPERIMENTAL {
 	__rte_ethdev_trace_rx_burst;
 	__rte_ethdev_trace_tx_burst;
 	rte_flow_get_aged_flows;
+
+        rte_apistats_init;
+        rte_apistats_uninit;
+        rte_apicounts;
+
 };
 
 INTERNAL {
